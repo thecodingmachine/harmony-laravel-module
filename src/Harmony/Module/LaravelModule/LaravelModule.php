@@ -15,6 +15,7 @@ class LaravelModule implements HarmonyModuleInterface {
 
     /**
      * Creates the module from the Laravel Application.
+     * If no Application instance is passed, the base application is loaded from bootstrap/app.php.
      *
      * @param Application $application
      */
@@ -22,17 +23,11 @@ class LaravelModule implements HarmonyModuleInterface {
         if ($application !== null) {
             $this->application = $application;
         } else {
-            chdir(__DIR__.'/../../../../../../../');
-
-            // Setup autoloading
-            require 'init_autoloader.php';
-
-            $this->application = Application::init(require 'config/application.config.php');
-
+            $this->application = require __DIR__.'/../../../../../../../bootstrap/app.php';
         }
 
         $acclimate = new ContainerAcclimator();
-        $this->acclimatedContainer = $acclimate->acclimate($this->application->getServiceManager());
+        $this->acclimatedContainer = $acclimate->acclimate($this->application);
     }
 
     /**
@@ -56,7 +51,7 @@ class LaravelModule implements HarmonyModuleInterface {
     public function getContainerExplorer()
     {
         if ($this->containerExplorer === null) {
-            $this->containerExplorer = new LaravelContainerExplorer($this->application->getServiceManager());
+            $this->containerExplorer = new LaravelContainerExplorer($this->application);
         }
         return $this->containerExplorer;
     }

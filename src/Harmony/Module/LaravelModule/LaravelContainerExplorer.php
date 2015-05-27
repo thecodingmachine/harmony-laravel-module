@@ -3,46 +3,31 @@ namespace Harmony\Module\LaravelModule;
 
 
 use Harmony\Module\ContainerExplorerInterface;
-use Zend\ServiceManager\ServiceManager;
+use Illuminate\Container\Container;
 
-class ZF2ContainerExplorer implements ContainerExplorerInterface {
-    private $serviceManager;
+class LaravelContainerExplorer implements ContainerExplorerInterface {
+    private $container;
 
     /**
-     * @param ServiceManager $serviceManager
+     * @param Container $container
      */
-    public function __construct(ServiceManager $serviceManager) {
-        $this->serviceManager = $serviceManager;
+    public function __construct(Container $container) {
+        $this->container = $container;
     }
 
     /**
      * Returns the name of the instances implementing `$type`.
-     * Will scan only the main services, not the aliases.
+     * Since in Laravel, there is at most one service per type, this will return one instance max.
      *
      * @param string $type
      * @return string[]
      */
     public function getInstancesByType($type)
     {
-        $registeredServices = $this->serviceManager->getRegisteredServices();
-
-        $services = [];
-
-        foreach (['invokableClasses', 'factories', 'instances'] as $mode) {
-            foreach ($registeredServices[$mode] as $serviceName) {
-                try {
-                    $instance = $this->serviceManager->get($serviceName);
-                    if (is_object($instance)) {
-                        if ($type == get_class($instance) || is_subclass_of($instance, $type)) {
-                            $services[] = $serviceName;
-                        }
-                    }
-                } catch (\Exception $e) {
-                    // No exceptions allowed to bubble up.
-                }
-            }
+        if ($this->container->bound($type)) {
+            return [$type];
+        } else {
+            return [];
         }
-
-        return $services;
     }
 }
