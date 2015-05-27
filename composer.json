@@ -1,0 +1,26 @@
+{
+    "name": "harmony/laravel-module",
+    "type": "library",
+    "description": "This package is an Harmony module for the Laravel PHP framework.",
+    "keywords": ["harmony", "laravel", "module"],
+    "homepage": "http://mouf-php.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Négrier",
+            "email": "d.negrier@thecodingmachine.com",
+            "homepage": "http://mouf-php.com"
+        }
+    ],
+    "require": {
+    	"php": ">=5.4.0",
+        "harmony/harmony-module-interface": "~1.0",
+        "acclimate/container": "~1.0",
+        "laravel/framework": "~5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Harmony\\Module\\LaravelModule\\": "src/Harmony/Module/LaravelModule/"
+        }
+    }
+}
