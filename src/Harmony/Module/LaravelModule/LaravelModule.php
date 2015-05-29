@@ -1,5 +1,5 @@
 <?php
-namespace Harmony\Module\ZF2Module;
+namespace Harmony\Module\LaravelModule;
 
 use Acclimate\Container\ContainerAcclimator;
 use Harmony\Module\ContainerExplorerInterface;
