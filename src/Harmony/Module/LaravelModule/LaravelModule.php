@@ -26,6 +26,10 @@ class LaravelModule implements HarmonyModuleInterface {
             $this->application = require __DIR__.'/../../../../../../../bootstrap/app.php';
         }
 
+        // Let's bootstrap the kernel. This will register most services.
+        $kernel = $this->application->make('Illuminate\Contracts\Console\Kernel');
+        $kernel->bootstrap();
+
         $acclimate = new ContainerAcclimator();
         $this->acclimatedContainer = $acclimate->acclimate($this->application);
     }
