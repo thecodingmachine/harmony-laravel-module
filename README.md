@@ -40,3 +40,9 @@ return [
 ```
 
 You are done! Now, start Harmony. Harmony modules should be able to detect your Laravel services and act accordingly!
+
+Troubleshooting
+---------------
+
+Due to a limitation in the way Laravel container can be explored, features relying on tags (like Harmony's validators)
+ will only work if the "abstract" tag name is an existing class name.
